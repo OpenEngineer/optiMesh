@@ -1,0 +1,40 @@
+FoamFile
+{
+  version 2.0;
+  format ascii;
+  class dictionary;
+  location "system";
+  object optiMeshDict;
+}
+
+nIters 10;
+
+writeInterval 0; // 0 or negative to not write at all, otherwise increment runTime and save
+
+rInf 2.0;
+
+r0 1.1;
+
+nLayers 5;
+
+d0 0.01;
+
+
+// evaluated in order (so same point can belong to different point sets)
+constraints 
+(
+  {
+    type planar;
+    set  backPointSet;
+  }
+
+  {
+    type planar;
+    set  frontPointSet;
+  }
+
+  {
+    type fixed;
+    set  wallPointSet;
+  }
+);

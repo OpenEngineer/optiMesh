@@ -1,0 +1,299 @@
+wmake libso .
+Making dependency list for source file quadraticSearch.C
+g++ -std=c++11 -m64 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -O3  -DNoRepository -ftemplate-depth-100 -I./lnInclude -I/opt/OpenFOAM/OpenFOAM-5.0/src/finiteVolume/lnInclude -I/opt/OpenFOAM/OpenFOAM-5.0/src/meshTools/lnInclude -IlnInclude -I. -I/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude -I/opt/OpenFOAM/OpenFOAM-5.0/src/OSspecific/POSIX/lnInclude   -fPIC -c optiSteps/quadraticSearch/quadraticSearch.C -o Make/linux64GccDPInt32Opt/optiSteps/quadraticSearch/quadraticSearch.o
+optiSteps/quadraticSearch/quadraticSearch.C: In static member function ‘static void Foam::optiMesh::quadraticSearch::fitQuadratic(const scalarField&, const scalarField&, Foam::scalar&, Foam::scalar&, Foam::scalar&)’:
+optiSteps/quadraticSearch/quadraticSearch.C:79:3: error: no matching function for call to ‘Foam::Vector<double>::Vector(Foam::tmp<Foam::Field<double> >, Foam::tmp<Foam::Field<double> >, Foam::tmp<Foam::Field<double> >)’
+   );
+   ^
+In file included from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Vector.H:142:0,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/vector.H:39,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/point.H:35,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/pointField.H:35,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edge.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edgeList.H:32,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveMesh.H:54,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/polyMesh.H:45,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/finiteVolume/lnInclude/fvMesh.H:50,
+                 from ./lnInclude/optiStep.H:4,
+                 from optiSteps/quadraticSearch/quadraticSearch.H:6,
+                 from optiSteps/quadraticSearch/quadraticSearch.C:3:
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/VectorI.H:66:8: note: candidate: Foam::Vector<Cmpt>::Vector(Foam::Istream&) [with Cmpt = double]
+ inline Foam::Vector<Cmpt>::Vector(Istream& is)
+        ^~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/VectorI.H:66:8: note:   candidate expects 1 argument, 3 provided
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/VectorI.H:52:8: note: candidate: Foam::Vector<Cmpt>::Vector(const Cmpt&, const Cmpt&, const Cmpt&) [with Cmpt = double]
+ inline Foam::Vector<Cmpt>::Vector
+        ^~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/VectorI.H:52:8: note:   no known conversion for argument 1 from ‘Foam::tmp<Foam::Field<double> >’ to ‘const double&’
+In file included from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/vector.H:39:0,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/point.H:35,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/pointField.H:35,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edge.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edgeList.H:32,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveMesh.H:54,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/polyMesh.H:45,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/finiteVolume/lnInclude/fvMesh.H:50,
+                 from ./lnInclude/optiStep.H:4,
+                 from optiSteps/quadraticSearch/quadraticSearch.H:6,
+                 from optiSteps/quadraticSearch/quadraticSearch.C:3:
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Vector.H:89:16: note: candidate: template<class Cmpt2> Foam::Vector<Cmpt>::Vector(const Foam::VectorSpace<Foam::Vector<Cmpt2>, Cmpt2, 3u>&)
+         inline Vector(const VectorSpace<Vector<Cmpt2>, Cmpt2, 3>&);
+                ^~~~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Vector.H:89:16: note:   template argument deduction/substitution failed:
+optiSteps/quadraticSearch/quadraticSearch.C:79:3: note:   ‘Foam::tmp<Foam::Field<double> >’ is not derived from ‘const Foam::VectorSpace<Foam::Vector<Cmpt>, Cmpt, 3u>’
+   );
+   ^
+In file included from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Vector.H:142:0,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/vector.H:39,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/point.H:35,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/pointField.H:35,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edge.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edgeList.H:32,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveMesh.H:54,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/polyMesh.H:45,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/finiteVolume/lnInclude/fvMesh.H:50,
+                 from ./lnInclude/optiStep.H:4,
+                 from optiSteps/quadraticSearch/quadraticSearch.H:6,
+                 from optiSteps/quadraticSearch/quadraticSearch.C:3:
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/VectorI.H:34:8: note: candidate: Foam::Vector<Cmpt>::Vector(Foam::zero) [with Cmpt = double]
+ inline Foam::Vector<Cmpt>::Vector(const Foam::zero)
+        ^~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/VectorI.H:34:8: note:   candidate expects 1 argument, 3 provided
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/VectorI.H:29:8: note: candidate: Foam::Vector<Cmpt>::Vector() [with Cmpt = double]
+ inline Foam::Vector<Cmpt>::Vector()
+        ^~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/VectorI.H:29:8: note:   candidate expects 0 arguments, 3 provided
+In file included from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/vector.H:39:0,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/point.H:35,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/pointField.H:35,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edge.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edgeList.H:32,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveMesh.H:54,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/polyMesh.H:45,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/finiteVolume/lnInclude/fvMesh.H:50,
+                 from ./lnInclude/optiStep.H:4,
+                 from optiSteps/quadraticSearch/quadraticSearch.H:6,
+                 from optiSteps/quadraticSearch/quadraticSearch.C:3:
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Vector.H:58:7: note: candidate: Foam::Vector<double>::Vector(const Foam::Vector<double>&)
+ class Vector
+       ^~~~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Vector.H:58:7: note:   candidate expects 1 argument, 3 provided
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Vector.H:58:7: note: candidate: Foam::Vector<double>::Vector(Foam::Vector<double>&&)
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Vector.H:58:7: note:   candidate expects 1 argument, 3 provided
+optiSteps/quadraticSearch/quadraticSearch.C:86:3: error: no matching function for call to ‘Foam::Tensor<double>::Tensor(Foam::tmp<Foam::Field<double> >, Foam::tmp<Foam::Field<double> >, Foam::tmp<Foam::Field<double> >, Foam::tmp<Foam::Field<double> >, Foam::tmp<Foam::Field<double> >, Foam::tmp<Foam::Field<double> >, Foam::tmp<Foam::Field<double> >, Foam::tmp<Foam::Field<double> >, Foam::tmp<Foam::Field<double> >)’
+   );
+   ^
+In file included from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Tensor.H:231:0,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/SymmTensorI.H:27,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/SymmTensor.H:155,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/symmTensor.H:38,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/fieldTypes.H:37,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/flipOp.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/mapDistributeBaseTemplates.C:29,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/mapDistributeBase.H:489,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/FieldMapper.H:35,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Field.C:26,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Field.H:408,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/labelField.H:39,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveFields.H:37,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/pointField.H:36,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edge.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edgeList.H:32,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveMesh.H:54,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/polyMesh.H:45,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/finiteVolume/lnInclude/fvMesh.H:50,
+                 from ./lnInclude/optiStep.H:4,
+                 from optiSteps/quadraticSearch/quadraticSearch.H:6,
+                 from optiSteps/quadraticSearch/quadraticSearch.C:3:
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:144:8: note: candidate: Foam::Tensor<Cmpt>::Tensor(Foam::Istream&) [with Cmpt = double]
+ inline Foam::Tensor<Cmpt>::Tensor(Istream& is)
+        ^~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:144:8: note:   candidate expects 1 argument, 9 provided
+In file included from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/SymmTensorI.H:27:0,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/SymmTensor.H:155,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/symmTensor.H:38,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/fieldTypes.H:37,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/flipOp.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/mapDistributeBaseTemplates.C:29,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/mapDistributeBase.H:489,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/FieldMapper.H:35,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Field.C:26,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Field.H:408,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/labelField.H:39,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveFields.H:37,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/pointField.H:36,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edge.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edgeList.H:32,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveMesh.H:54,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/polyMesh.H:45,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/finiteVolume/lnInclude/fvMesh.H:50,
+                 from ./lnInclude/optiStep.H:4,
+                 from optiSteps/quadraticSearch/quadraticSearch.H:6,
+                 from optiSteps/quadraticSearch/quadraticSearch.C:3:
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Tensor.H:136:9: note: candidate: template<template<class, unsigned char <anonymous>, unsigned char <anonymous> > class Block2, unsigned char BRowStart, unsigned char BColStart> Foam::Tensor<Cmpt>::Tensor(const Block2<Foam::Tensor<Cmpt>, BRowStart, BColStart>&)
+         Tensor
+         ^~~~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Tensor.H:136:9: note:   template argument deduction/substitution failed:
+optiSteps/quadraticSearch/quadraticSearch.C:86:3: error: wrong number of template arguments (1, should be 3)
+   );
+   ^
+In file included from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Tensor.H:231:0,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/SymmTensorI.H:27,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/SymmTensor.H:155,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/symmTensor.H:38,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/fieldTypes.H:37,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/flipOp.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/mapDistributeBaseTemplates.C:29,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/mapDistributeBase.H:489,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/FieldMapper.H:35,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Field.C:26,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Field.H:408,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/labelField.H:39,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveFields.H:37,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/pointField.H:36,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edge.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edgeList.H:32,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveMesh.H:54,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/polyMesh.H:45,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/finiteVolume/lnInclude/fvMesh.H:50,
+                 from ./lnInclude/optiStep.H:4,
+                 from optiSteps/quadraticSearch/quadraticSearch.H:6,
+                 from optiSteps/quadraticSearch/quadraticSearch.C:3:
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:130:61: note: provided for ‘template<class, unsigned char <anonymous>, unsigned char <anonymous> > class Block2’
+     template<class, Foam::direction, Foam::direction> class Block2,
+                                                             ^~~~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:114:8: note: candidate: Foam::Tensor<Cmpt>::Tensor(Cmpt, Cmpt, Cmpt, Cmpt, Cmpt, Cmpt, Cmpt, Cmpt, Cmpt) [with Cmpt = double]
+ inline Foam::Tensor<Cmpt>::Tensor
+        ^~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:114:8: note:   no known conversion for argument 1 from ‘Foam::tmp<Foam::Field<double> >’ to ‘double’
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:100:8: note: candidate: Foam::Tensor<Cmpt>::Tensor(const Foam::Vector<Cmpt>&, const Foam::Vector<Cmpt>&, const Foam::Vector<Cmpt>&) [with Cmpt = double]
+ inline Foam::Tensor<Cmpt>::Tensor
+        ^~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:100:8: note:   candidate expects 3 arguments, 9 provided
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:83:8: note: candidate: Foam::Tensor<Cmpt>::Tensor(const Foam::Vector<Foam::Vector<Cmpt> >&) [with Cmpt = double]
+ inline Foam::Tensor<Cmpt>::Tensor(const Vector<Vector<Cmpt>>& tr)
+        ^~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:83:8: note:   candidate expects 1 argument, 9 provided
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:74:8: note: candidate: Foam::Tensor<Cmpt>::Tensor(const Foam::SymmTensor<Cmpt>&) [with Cmpt = double]
+ inline Foam::Tensor<Cmpt>::Tensor(const SymmTensor<Cmpt>& st)
+        ^~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:74:8: note:   candidate expects 1 argument, 9 provided
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:65:8: note: candidate: Foam::Tensor<Cmpt>::Tensor(const Foam::SphericalTensor<Cmpt>&) [with Cmpt = double]
+ inline Foam::Tensor<Cmpt>::Tensor(const SphericalTensor<Cmpt>& st)
+        ^~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:65:8: note:   candidate expects 1 argument, 9 provided
+In file included from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/SymmTensorI.H:27:0,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/SymmTensor.H:155,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/symmTensor.H:38,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/fieldTypes.H:37,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/flipOp.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/mapDistributeBaseTemplates.C:29,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/mapDistributeBase.H:489,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/FieldMapper.H:35,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Field.C:26,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Field.H:408,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/labelField.H:39,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveFields.H:37,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/pointField.H:36,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edge.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edgeList.H:32,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveMesh.H:54,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/polyMesh.H:45,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/finiteVolume/lnInclude/fvMesh.H:50,
+                 from ./lnInclude/optiStep.H:4,
+                 from optiSteps/quadraticSearch/quadraticSearch.H:6,
+                 from optiSteps/quadraticSearch/quadraticSearch.C:3:
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Tensor.H:102:16: note: candidate: template<class Cmpt2> Foam::Tensor<Cmpt>::Tensor(const Foam::VectorSpace<Foam::Tensor<Cmpt2>, Cmpt2, 9u>&)
+         inline Tensor(const VectorSpace<Tensor<Cmpt2>, Cmpt2, 9>&);
+                ^~~~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Tensor.H:102:16: note:   template argument deduction/substitution failed:
+optiSteps/quadraticSearch/quadraticSearch.C:86:3: note:   ‘Foam::tmp<Foam::Field<double> >’ is not derived from ‘const Foam::VectorSpace<Foam::Tensor<Cmpt>, Cmpt, 9u>’
+   );
+   ^
+In file included from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/SymmTensorI.H:27:0,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/SymmTensor.H:155,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/symmTensor.H:38,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/fieldTypes.H:37,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/flipOp.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/mapDistributeBaseTemplates.C:29,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/mapDistributeBase.H:489,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/FieldMapper.H:35,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Field.C:26,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Field.H:408,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/labelField.H:39,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveFields.H:37,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/pointField.H:36,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edge.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edgeList.H:32,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveMesh.H:54,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/polyMesh.H:45,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/finiteVolume/lnInclude/fvMesh.H:50,
+                 from ./lnInclude/optiStep.H:4,
+                 from optiSteps/quadraticSearch/quadraticSearch.H:6,
+                 from optiSteps/quadraticSearch/quadraticSearch.C:3:
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Tensor.H:98:16: note: candidate: template<class Cmpt2> Foam::Tensor<Cmpt>::Tensor(const Foam::MatrixSpace<Foam::Tensor<Cmpt2>, Cmpt2, 3u, 3u>&)
+         inline Tensor(const MatrixSpace<Tensor<Cmpt2>, Cmpt2, 3, 3>&);
+                ^~~~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Tensor.H:98:16: note:   template argument deduction/substitution failed:
+optiSteps/quadraticSearch/quadraticSearch.C:86:3: note:   ‘Foam::tmp<Foam::Field<double> >’ is not derived from ‘const Foam::MatrixSpace<Foam::Tensor<Cmpt>, Cmpt, 3u, 3u>’
+   );
+   ^
+In file included from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Tensor.H:231:0,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/SymmTensorI.H:27,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/SymmTensor.H:155,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/symmTensor.H:38,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/fieldTypes.H:37,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/flipOp.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/mapDistributeBaseTemplates.C:29,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/mapDistributeBase.H:489,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/FieldMapper.H:35,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Field.C:26,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Field.H:408,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/labelField.H:39,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveFields.H:37,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/pointField.H:36,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edge.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edgeList.H:32,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveMesh.H:54,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/polyMesh.H:45,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/finiteVolume/lnInclude/fvMesh.H:50,
+                 from ./lnInclude/optiStep.H:4,
+                 from optiSteps/quadraticSearch/quadraticSearch.H:6,
+                 from optiSteps/quadraticSearch/quadraticSearch.C:3:
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:36:8: note: candidate: Foam::Tensor<Cmpt>::Tensor(Foam::zero) [with Cmpt = double]
+ inline Foam::Tensor<Cmpt>::Tensor(const Foam::zero)
+        ^~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:36:8: note:   candidate expects 1 argument, 9 provided
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:31:8: note: candidate: Foam::Tensor<Cmpt>::Tensor() [with Cmpt = double]
+ inline Foam::Tensor<Cmpt>::Tensor()
+        ^~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/TensorI.H:31:8: note:   candidate expects 0 arguments, 9 provided
+In file included from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/SymmTensorI.H:27:0,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/SymmTensor.H:155,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/symmTensor.H:38,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/fieldTypes.H:37,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/flipOp.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/mapDistributeBaseTemplates.C:29,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/mapDistributeBase.H:489,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/FieldMapper.H:35,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Field.C:26,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Field.H:408,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/labelField.H:39,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveFields.H:37,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/pointField.H:36,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edge.H:40,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/edgeList.H:32,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/primitiveMesh.H:54,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/polyMesh.H:45,
+                 from /opt/OpenFOAM/OpenFOAM-5.0/src/finiteVolume/lnInclude/fvMesh.H:50,
+                 from ./lnInclude/optiStep.H:4,
+                 from optiSteps/quadraticSearch/quadraticSearch.H:6,
+                 from optiSteps/quadraticSearch/quadraticSearch.C:3:
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Tensor.H:62:7: note: candidate: Foam::Tensor<double>::Tensor(const Foam::Tensor<double>&)
+ class Tensor
+       ^~~~~~
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Tensor.H:62:7: note:   candidate expects 1 argument, 9 provided
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Tensor.H:62:7: note: candidate: Foam::Tensor<double>::Tensor(Foam::Tensor<double>&&)
+/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude/Tensor.H:62:7: note:   candidate expects 1 argument, 9 provided
+/opt/OpenFOAM/OpenFOAM-5.0/wmake/rules/General/transform:25: recipe for target 'Make/linux64GccDPInt32Opt/optiSteps/quadraticSearch/quadraticSearch.o' failed
+make: *** [Make/linux64GccDPInt32Opt/optiSteps/quadraticSearch/quadraticSearch.o] Error 1

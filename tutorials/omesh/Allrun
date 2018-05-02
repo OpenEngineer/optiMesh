@@ -1,0 +1,6 @@
+#!/bin/bash
+cd ${0%/*}
+blockMesh
+setSet -batch system/pointSetBatch
+cp -rf -T 0.orig 0
+optiMesh

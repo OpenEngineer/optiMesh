@@ -1,0 +1,154 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+
+z0 0.0;
+z1 1.0;
+
+inner {
+  n    10;
+  x0 -0.5;
+  x1  0.5;
+  y0 -0.5;
+  y1  0.5;
+}
+
+outer {
+  n    8;
+  x0 -1.0;
+  x1  1.0;
+  y0 -1.0;
+  y1  1.0;
+  r0 -1.41421356;
+  r1  1.41421356;
+}
+
+convertToMeters 1;
+
+vertices
+(
+    ($:inner.x0 $:inner.y0 $:z0) // 0
+    ($:inner.x1 $:inner.y0 $:z0) // 1
+    ($:inner.x1 $:inner.y1 $:z0) // 2
+    ($:inner.x0 $:inner.y1 $:z0) // 3
+
+    ($:outer.x0 $:outer.y0 $:z0) // 4
+    ($:outer.x1 $:outer.y0 $:z0) // 5
+    ($:outer.x1 $:outer.y1 $:z0) // 6
+    ($:outer.x0 $:outer.y1 $:z0) // 7
+
+    ($:inner.x0 $:inner.y0 $:z1) // 8
+    ($:inner.x1 $:inner.y0 $:z1) // 9
+    ($:inner.x1 $:inner.y1 $:z1) // 10
+    ($:inner.x0 $:inner.y1 $:z1) // 11
+
+    ($:outer.x0 $:outer.y0 $:z1) // 12
+    ($:outer.x1 $:outer.y0 $:z1) // 13
+    ($:outer.x1 $:outer.y1 $:z1) // 14
+    ($:outer.x0 $:outer.y1 $:z1) // 15
+);
+
+blocks
+(
+    hex (0 1 2 3 8 9 10 11)
+    (
+        $:inner.n
+        $:inner.n
+        1
+    )
+    simpleGrading (1 1 1)
+
+    hex (0 4 5 1 8 12 13 9)
+    (
+        $:outer.n
+        $:inner.n
+        1
+    )
+    simpleGrading (1 1 1)
+
+    hex (1 5 6 2 9 13 14 10)
+    (
+        $:outer.n
+        $:inner.n
+        1
+    )
+    simpleGrading (1 1 1)
+
+    hex (2 6 7 3 10 14 15 11)
+    (
+        $:outer.n
+        $:inner.n
+        1
+    )
+    simpleGrading (1 1 1)
+
+    hex (3 7 4 0 11 15 12 8)
+    (
+        $:outer.n
+        $:inner.n
+        1
+    )
+    simpleGrading (1 1 1)
+);
+
+edges
+(
+  arc 4 5 (0.0 $:outer.r0 $:z0)
+  arc 5 6 ($:outer.r1 0.0 $:z0)
+  arc 6 7 (0.0 $:outer.r1 $:z0)
+  arc 7 4 ($:outer.r0 0.0 $:z0)
+ 
+  arc 12 13 (0.0 $:outer.r0 $:z1)
+  arc 13 14 ($:outer.r1 0.0 $:z1)
+  arc 14 15 (0.0 $:outer.r1 $:z1)
+  arc 15 12 ($:outer.r0 0.0 $:z1)
+);
+
+boundary
+(
+  front 
+  {
+    type patch;
+    faces
+    (
+      ( 8  9 10 11)
+      ( 8 12 13  9)
+      ( 9 13 14 10)
+      (10 14 15 11)
+      (11 15  8 12)
+    );
+  }
+
+  back
+  {
+    type patch;
+    faces
+    (
+      (0 3 2 1)
+      (0 1 5 4)
+      (1 2 6 5)
+      (2 3 7 6)
+      (3 4 0 7)
+    );
+  }
+
+  wall
+  {
+    type wall;
+    faces
+    (
+      (4 12 15 7)
+      (5 13 12 4)
+      (6 14 13 5)
+      (7 15 14 6)
+    );
+  }
+);
+
+mergePatchPairs
+(
+);

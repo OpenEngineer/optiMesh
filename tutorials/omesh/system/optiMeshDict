@@ -1,0 +1,83 @@
+FoamFile
+{
+  version 2.0;
+  format ascii;
+  class dictionary;
+  object optiMeshDict;
+}
+
+
+nIters 10;
+
+
+writeInterval 1; // 0 or negative to not write at all, otherwise increment runTime and save
+
+
+direction {
+  type orthogonality;
+  weightType simple;
+  faceCentreType simple;
+
+  penalizationPower 0.5;
+}
+
+
+solver {
+  type CG;
+}
+
+
+step {
+  type quadraticSearch;
+  relaxation (
+    1.0
+  );
+
+  nMaxIters 10;
+  tol 1e-7;
+  initialSamples (
+    0.01
+    0.1
+    0.2
+    0.3
+  );
+
+  objective {
+    type orthogonality;
+    weightType simple;
+    faceCentreType simple;
+    penalizationPower 0.5;
+  }
+}
+
+
+r0 1.5;
+rInf 2.0;
+yCut 2.0;
+d0 0.03;
+nLayers 4;
+A 1.0;
+
+
+// evaluated in order (so same point can belong to different point sets)
+constraints 
+(
+  {
+    type planar;
+    set  backPointSet;
+    n (0 0 1);
+  }
+
+  {
+    type planar;
+    set  frontPointSet;
+    n (0 0 1);
+  }
+
+  {
+    type cylindrical;
+    set  wallPointSet;
+    origin (0 0 0);
+    axis (0 0 1);
+  }
+);

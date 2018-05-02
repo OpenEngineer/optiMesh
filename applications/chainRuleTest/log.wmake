@@ -1,0 +1,20 @@
+Making dependency list for source file chainRuleTest.C
+g++ -std=c++11 -m64 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -O3  -DNoRepository -ftemplate-depth-100 -I/opt/OpenFOAM/OpenFOAM-5.0/src/finiteVolume/lnInclude -I/opt/OpenFOAM/OpenFOAM-5.0/src/meshTools/lnInclude -I../../src/lnInclude -IlnInclude -I. -I/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude -I/opt/OpenFOAM/OpenFOAM-5.0/src/OSspecific/POSIX/lnInclude   -fPIC -c chainRuleTest.C -o Make/linux64GccDPInt32Opt/chainRuleTest.o
+g++ -std=c++11 -m64 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -O3  -DNoRepository -ftemplate-depth-100 -I/opt/OpenFOAM/OpenFOAM-5.0/src/finiteVolume/lnInclude -I/opt/OpenFOAM/OpenFOAM-5.0/src/meshTools/lnInclude -I../../src/lnInclude -IlnInclude -I. -I/opt/OpenFOAM/OpenFOAM-5.0/src/OpenFOAM/lnInclude -I/opt/OpenFOAM/OpenFOAM-5.0/src/OSspecific/POSIX/lnInclude   -fPIC -Xlinker --add-needed -Xlinker --no-as-needed Make/linux64GccDPInt32Opt/chainRuleTest.o -L/opt/OpenFOAM/OpenFOAM-5.0/platforms/linux64GccDPInt32Opt/lib \
+    -lfiniteVolume -lmeshTools -L/home/christian/OpenFOAM/christian-5.0/platforms/linux64GccDPInt32Opt/lib -loptiMesh -lOpenFOAM -ldl  \
+     -lm -o /home/christian/OpenFOAM/christian-5.0/platforms/linux64GccDPInt32Opt/bin/chainRuleTest
+Make/linux64GccDPInt32Opt/chainRuleTest.o: In function `main':
+chainRuleTest.C:(.text.startup+0x20e): undefined reference to `Foam::optiMesh::operator-(Foam::optiMesh::chainRulePoint const&, Foam::optiMesh::chainRulePoint const&)'
+chainRuleTest.C:(.text.startup+0x21c): undefined reference to `Foam::optiMesh::eval(Foam::optiMesh::chainRulePoint&)'
+chainRuleTest.C:(.text.startup+0x308): undefined reference to `Foam::optiMesh::grad(Foam::optiMesh::chainRulePoint&, int const&)'
+chainRuleTest.C:(.text.startup+0x371): undefined reference to `Foam::optiMesh::move(Foam::optiMesh::chainRulePoint&, double const&, double const&, double const&)'
+chainRuleTest.C:(.text.startup+0x391): undefined reference to `Foam::optiMesh::operator&(Foam::optiMesh::chainRulePoint const&, Foam::optiMesh::chainRulePoint const&)'
+chainRuleTest.C:(.text.startup+0x3a4): undefined reference to `Foam::optiMesh::sqrt(Foam::optiMesh::chainRuleScalar const&)'
+chainRuleTest.C:(.text.startup+0x3b2): undefined reference to `Foam::optiMesh::operator/(Foam::optiMesh::chainRulePoint const&, Foam::optiMesh::chainRuleScalar const&)'
+chainRuleTest.C:(.text.startup+0x451): undefined reference to `Foam::optiMesh::grad(Foam::optiMesh::chainRulePoint&, int const&)'
+chainRuleTest.C:(.text.startup+0x66b): undefined reference to `Foam::optiMesh::operator*(Foam::optiMesh::chainRuleScalar const&, Foam::optiMesh::chainRulePoint const&)'
+chainRuleTest.C:(.text.startup+0x80f): undefined reference to `Foam::optiMesh::grad(Foam::optiMesh::chainRulePoint&, int const&)'
+chainRuleTest.C:(.text.startup+0x824): undefined reference to `Foam::optiMesh::eval(Foam::optiMesh::chainRulePoint&)'
+collect2: error: ld returned 1 exit status
+/opt/OpenFOAM/OpenFOAM-5.0/wmake/makefiles/general:140: recipe for target '/home/christian/OpenFOAM/christian-5.0/platforms/linux64GccDPInt32Opt/bin/chainRuleTest' failed
+make: *** [/home/christian/OpenFOAM/christian-5.0/platforms/linux64GccDPInt32Opt/bin/chainRuleTest] Error 1

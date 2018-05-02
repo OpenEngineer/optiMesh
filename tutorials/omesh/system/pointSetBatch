@@ -1,0 +1,8 @@
+faceSet backFaceSet new patchToFace back
+pointSet backPointSet new faceToPoint backFaceSet all
+
+faceSet frontFaceSet new patchToFace front
+pointSet frontPointSet new faceToPoint frontFaceSet all
+
+faceSet wallFaceSet new patchToFace wall
+pointSet wallPointSet new faceToPoint wallFaceSet all
