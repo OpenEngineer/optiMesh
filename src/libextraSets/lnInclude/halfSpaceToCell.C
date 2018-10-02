@@ -1,1 +1,1 @@
-../halfSpaceToCell.C
+../halfSpaceToCell/halfSpaceToCell.C

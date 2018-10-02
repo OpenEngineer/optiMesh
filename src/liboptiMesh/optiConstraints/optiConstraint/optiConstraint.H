@@ -14,6 +14,8 @@ namespace optiMesh {
 class optiConstraint : public pointSet 
 {
 protected:
+  const fvMesh& mesh_; // can be used for more advanced constraints (like localSmoothing)
+
   pointField orig_;
 
 public:

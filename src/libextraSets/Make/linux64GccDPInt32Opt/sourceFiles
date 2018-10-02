@@ -1,2 +1,3 @@
 SOURCE = \
-halfSpaceToCell.C 
+halfSpaceToCell/halfSpaceToCell.C \
+minHexAspectRatio/minHexAspectRatio.C 

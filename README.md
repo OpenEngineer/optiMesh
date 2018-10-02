@@ -4,6 +4,10 @@ OpenFOAM mesh smoothing. Place the settings for optiMesh in a system/optiMeshDic
 
 See the tutorials/omesh case for an example.
 
+# Installation
+
+run the Allwmake script
+
 # Other tools included
 
 * removeCells

@@ -5,6 +5,8 @@ optiConstraints/fixed/fixed.C
 optiConstraints/planar/planar.C
 optiConstraints/cylindrical/cylindrical.C
 optiConstraints/polynomial/polynomial.C
+optiConstraints/localSmoothing/localSmoothing.C
+optiConstraints/minDistance/minDistance.C
 
 
 optiDirections/optiDirection/optiDirection.C

@@ -6,7 +6,7 @@
 // system/smoothMeshDict entry:
 //
 // {
-//   type planarPointSet;
+//   type planar;
 //   set p0;
 //   n (0 0 1);
 //   p (0 0 0); // optional, otherwise planar to original point

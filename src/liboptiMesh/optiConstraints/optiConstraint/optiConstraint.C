@@ -17,6 +17,7 @@ using namespace Foam::optiMesh;
 
 optiConstraint::optiConstraint(const fvMesh& mesh, const dictionary& dict) : 
   pointSet(mesh, word(dict.lookup("set"))),
+  mesh_(mesh),
   orig_(mesh.points())
 {}
 
