@@ -7,30 +7,33 @@ FoamFile
 }
 
 
-nIters 10;
+nIters 100;
 
-
-writeInterval 1; // 0 or negative to not write at all, otherwise increment runTime and save
+writeInterval 10; // 0 or negative to not write at all, otherwise increment runTime and save
 
 
 direction {
-  type orthogonality;
+  type pointLaplacian;
   weightType simple;
-  faceCentreType simple;
 
-  penalizationPower 0.5;
+  //type orthogonality;
+  //faceCentreType simple;
+  //penalizationPower 0.5;
 }
 
 
 solver {
-  type CG;
+  type none;
+  //type CG;
 }
 
 
 step {
-  type quadraticSearch;
-  relaxation (
-    1.0
+  type relaxed;
+  //type quadraticSearch;
+
+  relaxation ( // a list of relaxation factors (for each initial time step)
+    1.0 // 1.0 -> no relaxation
   );
 
   nMaxIters 10;
@@ -57,6 +60,8 @@ yCut 2.0;
 d0 0.03;
 nLayers 4;
 A 1.0;
+collapseDegenerateHexCells false;
+degenerateAngle 10;
 
 
 // evaluated in order (so same point can belong to different point sets)
@@ -80,4 +85,9 @@ constraints
     origin (0 0 0);
     axis (0 0 1);
   }
+
+  /*{
+    type fixed;
+    set  wallPointSet;
+  }*/
 );
