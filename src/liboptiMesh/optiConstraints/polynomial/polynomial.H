@@ -3,7 +3,7 @@
 
 #include "optiConstraint.H"
 
-// system/smoothMeshDict entry:
+// system/optiMeshDict entry:
 //
 // {
 //   type polynomial;

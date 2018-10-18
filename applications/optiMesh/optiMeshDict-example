@@ -11,13 +11,33 @@ nIters 10;
 
 writeInterval 0; // 0 or negative to not write at all, otherwise increment runTime and save
 
-rInf 2.0;
 
-r0 1.1;
+boundaryRefinement {
+  useSourceFace true; // override meshWave
+  onlyOpposite true; // only ok for hex-meshes
 
-nLayers 5;
+  default {
+    r0 1.1;
+    nLayers 5;
+    d0 0.01;
+  }
 
-d0 0.01;
+  patches {
+    wall1 {
+      r0 1.1;
+      nLayers 5;
+      d0 0.001;
+    }
+
+    wall2 {
+      r0 1.1;
+      nLayers 5;
+      d0 0.001;
+    }
+
+    // etc
+  }
+}
 
 
 // evaluated in order (so same point can belong to different point sets)

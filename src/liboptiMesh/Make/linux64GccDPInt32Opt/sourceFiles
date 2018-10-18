@@ -7,6 +7,7 @@ optiConstraints/cylindrical/cylindrical.C \
 optiConstraints/polynomial/polynomial.C \
 optiConstraints/localSmoothing/localSmoothing.C \
 optiConstraints/minDistance/minDistance.C \
+optiConstraints/extrudedProfile/extrudedProfile.C \
 optiDirections/optiDirection/optiDirection.C \
 optiDirections/optiDirection/optiDirectionNew.C \
 optiDirections/laplacian/laplacian.C \

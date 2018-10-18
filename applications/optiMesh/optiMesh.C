@@ -9,27 +9,24 @@
 #include "optiStep.H"
 
 
-// TODO: simplify, and apply on a per-patch basis
-typedef struct expansionRatio_t {
+// TODO: and apply on a per-patch basis
+typedef struct boundaryRefinement_t {
   scalar r0;
-  scalar rInf;
   scalar nLayers; // approximate value
   scalar d0;
-  scalar yCut;
-  scalar A; // feedback power
-} expansionRatio;
+  autoPtr<labelList> cells; // cells to which it must be applied
+} boundaryRefinement;
 
 
-expansionRatio initExpansionRatio(const dictionary& dict)
+typedef HashTable<boundaryRefinement, word> PatchesBoundaryRefinement;
+
+boundaryRefinement initBoundaryRefinement(const dictionary& dict)
 {
-  expansionRatio rExp;
+  boundaryRefinement rExp;
 
   dict.lookup("r0") >> rExp.r0;
-  dict.lookup("rInf") >> rExp.rInf;
   dict.lookup("nLayers") >> rExp.nLayers;
   dict.lookup("d0") >> rExp.d0;
-  dict.lookup("yCut") >> rExp.yCut;
-  dict.lookup("A") >> rExp.A;
 
   return rExp;
 }
@@ -47,8 +44,20 @@ void readPositionedPointSets(const fvMesh& mesh, const dictionary& dict,
 }
 
 
+bool faceIsOpposite(const fvMesh& mesh, const label& cellI, const label& face1, const label& face2)
+{
+  label oppositeFace = mesh.cells()[cellI].opposingFaceLabel(face1, mesh.faces());
+
+  if (oppositeFace == face2) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// sourceFace only set if onlyOpposite==true
 volScalarField getWallLayers(const fvMesh& mesh, Time& runTime, 
-    const expansionRatio& rExp)
+    const label& nLayers, bool onlyOpposite, labelList& sourceFace)
 {
   volScalarField wl
   (
@@ -67,7 +76,9 @@ volScalarField getWallLayers(const fvMesh& mesh, Time& runTime,
   // unset value
   wl = -1;
   // ambiguous value is GREAT
-  scalar ambiguousVal = rExp.nLayers;
+  scalar ambiguousVal = nLayers;
+
+  labelList localSourceFace(mesh.cells().size(), -1);
 
   // loop the mesh polyPatches
   forAll(mesh.boundaryMesh(), patchI) {
@@ -84,6 +95,8 @@ volScalarField getWallLayers(const fvMesh& mesh, Time& runTime,
 
         if (wl[cellI] < -0.5) {
           wl[cellI] = 0.0; // layer 0
+          localSourceFace[cellI] = faceI;
+          sourceFace[cellI] = faceI;
         } else { // ambiguous, set by another patch already
           wl[cellI] = ambiguousVal;
         }
@@ -91,7 +104,7 @@ volScalarField getWallLayers(const fvMesh& mesh, Time& runTime,
     }
   }
 
-  for(label layerI = 1; layerI < rExp.nLayers; layerI++) {
+  for(label layerI = 1; layerI < nLayers; layerI++) {
     forAll(mesh.cells(), cellI) {
       // only treat unset cells
       if (wl[cellI] < -0.5) {
@@ -113,7 +126,18 @@ volScalarField getWallLayers(const fvMesh& mesh, Time& runTime,
               if (wl[cellI] > -0.5) {
                 wl[cellI] = ambiguousVal;
               } else {
-                wl[cellI] = scalar(layerI);
+                if (onlyOpposite) {
+                  if (faceIsOpposite(mesh, neighbourI, faceI, localSourceFace[neighbourI])) {
+                    wl[cellI] = scalar(layerI);
+                    localSourceFace[cellI] = faceI;
+                    sourceFace[cellI] = sourceFace[neighbourI];
+                  } else {
+                    wl[cellI] = ambiguousVal;
+                  }
+                } else {
+                  wl[cellI] = scalar(layerI);
+                  sourceFace[cellI] = sourceFace[neighbourI];
+                }
               }
             }
           }
@@ -134,7 +158,7 @@ volScalarField getWallLayers(const fvMesh& mesh, Time& runTime,
 }
 
 
-scalar wantedYDist(const expansionRatio& rExp, scalar yLayer)
+scalar wantedYDist(const boundaryRefinement& rExp, scalar yLayer)
 {
   scalar l;
 
@@ -154,16 +178,60 @@ scalar wantedYDist(const expansionRatio& rExp, scalar yLayer)
 }
 
 
-point wantedCellCentre(point cc, const expansionRatio& rExp,
+point wantedCellCentre(point cc, const boundaryRefinement& rExp,
     scalar yLayer, scalar yDist, vector yn)
 {
   if (yLayer < rExp.nLayers) {
     scalar yWanted = wantedYDist(rExp, yLayer);
 
-    cc -= yn*(yWanted - yDist)*rExp.A;
+    cc -= yn*(yWanted - yDist);
   }
 
   return cc;
+}
+
+void calcWantedCellCentres(const fvMesh& mesh, vectorField& altCellCentres, 
+    const volScalarField& yLayer, const labelList& sourceFace, 
+    const volScalarField& yDist, const volVectorField& yNormal, bool useSourceFace, 
+    const boundaryRefinement& bRef, const labelList& cells)
+{
+  forAll(cells, i) {
+    label cellI = cells[i];
+
+    point cc = mesh.cellCentres()[cellI];
+
+    scalar distToWall = yDist[cellI];
+    vector ynLocal = yNormal[cellI];
+
+    // XXX: there are strong indications that this is exactly what meshWaves does
+    if (useSourceFace && sourceFace[cellI] != -1) {
+      vector d = cc - mesh.faceCentres()[sourceFace[cellI]];
+      scalar distToWall_ = Foam::sqrt(d&d);
+
+      vector ynLocal_ = -d/distToWall_;
+      distToWall = distToWall_;
+      ynLocal = ynLocal;
+    }
+
+    cc = wantedCellCentre(cc, bRef, yLayer[cellI], yDist[cellI], ynLocal);
+
+    altCellCentres[cellI] = cc;
+  }
+}
+
+void calcWantedCellCentres(const fvMesh& mesh, vectorField& altCellCentres, 
+    const volScalarField& yLayer, const labelList& sourceFace, 
+    const volScalarField& yDist, const volVectorField& yNormal, bool useSourceFace, 
+    const boundaryRefinement& defaultBoundaryRefinement, 
+    const PatchesBoundaryRefinement& patchBoundaryRefinement)
+{
+  calcWantedCellCentres(mesh, altCellCentres, yLayer, sourceFace, yDist, yNormal, useSourceFace,
+      defaultBoundaryRefinement, defaultBoundaryRefinement.cells());
+
+  forAllConstIter(PatchesBoundaryRefinement, patchBoundaryRefinement, iter) {
+    calcWantedCellCentres(mesh, altCellCentres, yLayer, sourceFace, yDist, yNormal, useSourceFace,
+        iter(), iter().cells());
+  }
 }
 
 
@@ -171,10 +239,7 @@ point wantedCellCentre(point cc, const expansionRatio& rExp,
 void smooth(const fvMesh& mesh, 
     pointField& pf, 
     scalar relaxation,
-    const expansionRatio& rExp,
-    const volScalarField& yLayer, 
-    const volScalarField& yDist, 
-    const volVectorField& yn)
+    const vectorField& altCellCentres)
 {
   forAll(pf, pointI) {
     point oldP(pf[pointI]);
@@ -189,10 +254,7 @@ void smooth(const fvMesh& mesh,
       label cellI = cells[localCellI];
 
       scalar v = mesh.cellVolumes()[cellI];
-      point cc = mesh.cellCentres()[cellI];
-
-      // modify cc by wanted 
-      cc = wantedCellCentre(cc, rExp, yLayer[cellI], yDist[cellI], yn[cellI]);
+      point cc = altCellCentres[cellI];
 
       vTot += v;
       newP += v*cc;
@@ -437,6 +499,58 @@ void initializeCollapsedEdgesAndCells(const fvMesh& mesh,
 }
 
 
+void appendCellToBoundaryLayerCells(const label& cellI, boundaryRefinement& bRef)
+{
+  if (bRef.cells.empty()) {
+    bRef.cells = autoPtr<labelList>(new labelList(1, cellI));
+  } else {
+    bRef.cells().append(cellI);
+  }
+}
+
+void assertCellsList(boundaryRefinement& bRef) {
+  if (bRef.cells.empty()) {
+    bRef.cells = autoPtr<labelList>(new labelList(0));
+  }
+}
+
+void collectBoundaryLayerCells(const fvMesh& mesh, const volScalarField& yLayer, 
+    const labelList& sourceFace, 
+    boundaryRefinement& defaultBoundaryRefinement, 
+    PatchesBoundaryRefinement& patchBoundaryRefinement)
+{
+  // loop all the cells
+  forAll(yLayer, cellI) {
+    label sFace = sourceFace[cellI];
+
+    if (sFace > -1) {
+      // which patch does it lie on?
+      label patchI = mesh.boundaryMesh().whichPatch(sFace);
+
+      word patchName = mesh.boundaryMesh().names()[patchI];
+
+      if (patchBoundaryRefinement.found(patchName)) {
+        if (yLayer[cellI] < patchBoundaryRefinement[patchName].nLayers) {
+          appendCellToBoundaryLayerCells(cellI, patchBoundaryRefinement[patchName]);
+        }
+      } else {
+        if (yLayer[cellI] < defaultBoundaryRefinement.nLayers) {
+          appendCellToBoundaryLayerCells(cellI, defaultBoundaryRefinement);
+        }
+      }
+    }
+  }
+
+  // make sure cells at least exists
+  assertCellsList(defaultBoundaryRefinement);
+  Info << "Collected " << defaultBoundaryRefinement.cells().size() << " cells with default boundary refinement" << endl;
+  forAllConstIter(PatchesBoundaryRefinement, patchBoundaryRefinement, iter) {
+    assertCellsList(patchBoundaryRefinement[iter.key()]);
+    Info << "Collected " << iter().cells().size() << " cells with explicit boundary refinement for patch " << iter.key() << endl;
+  }
+}
+
+
 int main(int argc, char *argv[])
 {
   argList::addBoolOption("constant", "dont increment time when saving");
@@ -487,9 +601,30 @@ int main(int argc, char *argv[])
 
 
   // boundary cell layers: init of data structures
-  expansionRatio rExp = initExpansionRatio(dict);
+  const dictionary& boundaryRefinementDict(dict.subDict("boundaryRefinement"));
+  bool useSourceFace = bool(boundaryRefinementDict.lookup("useSourceFace"));
+  bool onlyOpposite = bool(boundaryRefinementDict.lookup("onlyOpposite"));
+  boundaryRefinement defaultBoundaryRefinement = initBoundaryRefinement(boundaryRefinementDict.subDict("default"));
+  Info << "Default boundary refinement with d0=" << defaultBoundaryRefinement.d0 <<
+    " r0=" << defaultBoundaryRefinement.r0 << " nLayers=" << defaultBoundaryRefinement.nLayers << endl;
+  scalar boundaryRelaxation = readScalar(boundaryRefinementDict.lookup("relaxation"));
+  label maxBoundaryLayers = defaultBoundaryRefinement.nLayers;
+  PatchesBoundaryRefinement patchBoundaryRefinement;
+  const dictionary& patchesBoundaryRefinementDict(boundaryRefinementDict.subDict("patches"));
+  forAllConstIter(dictionary, patchesBoundaryRefinementDict, iter) {
+    word key = iter().keyword();
+    patchBoundaryRefinement.insert(key, initBoundaryRefinement(patchesBoundaryRefinementDict.subDict(key)));
+    maxBoundaryLayers = Foam::max(maxBoundaryLayers, patchBoundaryRefinement[key].nLayers);
+    Info << "Explicit boundary refinement for " << key << " with d0=" << patchBoundaryRefinement[key].d0 <<
+      " r0=" << patchBoundaryRefinement[key].r0 << " nLayers=" << patchBoundaryRefinement[key].nLayers << endl;
+  }
+  
   wallDist wd(mesh);
-  volScalarField yLayer = getWallLayers(mesh, runTime, rExp);
+  labelList sourceFace(mesh.cells().size(), -1);
+  volScalarField yLayer = getWallLayers(mesh, runTime, maxBoundaryLayers, onlyOpposite, sourceFace);
+
+  // collects cells per boundary or default, so we have quick access later on
+  collectBoundaryLayerCells(mesh, yLayer, sourceFace, defaultBoundaryRefinement, patchBoundaryRefinement);
 
   // map edges to pointIds
   bool collapseDegenerateHexCells;
@@ -526,9 +661,19 @@ int main(int argc, char *argv[])
 
     constrain(constraints, pf);
 
+    if (maxBoundaryLayers > 0) {
+      mesh.movePoints(pf);
 
-    //smooth(mesh, pf, relaxation, rExp, yLayer, wd.y(), wd.n());
-    // XXX: add cell layer functionality here
+      wd.movePoints();
+
+      vectorField altCellCentres(mesh.cellCentres());
+
+      calcWantedCellCentres(mesh, altCellCentres, yLayer, sourceFace, wd.y(), wd.n(), useSourceFace, defaultBoundaryRefinement, patchBoundaryRefinement);
+
+      smooth(mesh, pf, boundaryRelaxation, altCellCentres);
+
+      constrain(constraints, pf);
+    }
 
     mesh.movePoints(pf);
 

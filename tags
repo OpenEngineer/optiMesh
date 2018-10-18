@@ -1,0 +1,619 @@
+
+applications/collapseCells/collapseCells.C,1238
+labelList unsortedPointMerge(const List<point>& points, scalar tol)unsortedPointMerge11,311
+void printCellFaceInfo(label cellI, const fvMesh& mesh, printCellFaceInfo50,1270
+void alignFace(face& fNewUnique, const label& ownerI, alignFace72,2030
+void collectConnectedPoints(const label& pointI, const fvMesh& mesh,collectConnectedPoints100,2591
+labelList mergeCollapsedEdgePoints(const fvMesh& mesh, const scalar& tol)mergeCollapsedEdgePoints124,3203
+labelList collapseEdges(const fvMesh& mesh, const scalar& mergeTol, collapseEdges147,3771
+void collapseCells(const fvMesh& mesh, const scalar& mergeTol,collapseCells178,4700
+List<point> simpleFaceCentres(const fvMesh& mesh)simpleFaceCentres204,5470
+labelList mergeFaces(const fvMesh& mesh, const scalar& mergeTol)mergeFaces223,5900
+void collectConnectedFaces(const label& faceI, const List<point>& faceCentres,collectConnectedFaces234,6141
+labelList mergeFaces(const fvMesh& mesh, const List<point>& faceCentres, mergeFaces272,7295
+void mergeFaceDetails(const fvMesh& mesh, const labelList& faceMergeMap, mergeFaceDetails304,8147
+void collapseFaces(const fvMesh& mesh, const scalar& mergeTol,collapseFaces363,10303
+int main(int argc, char *argv[])main463,13703
+
+applications/removeCells/removeCells.C,291
+void removePoints(const fvMesh& mesh,removePoints8,114
+void removeCells(const fvMesh& mesh,removeCells32,599
+void removeFaces(const fvMesh& mesh,removeFaces42,809
+label assertPatch(fvMesh& mesh, const word& patchName)assertPatch72,1711
+int main(int argc, char *argv[])main116,2628
+
+applications/chainRuleTest/chainRuleTest.C,44
+int main(int argc, char* argv[]) main6,79
+
+applications/optiMesh/optiMesh.C,1678
+typedef struct expansionRatio_t {expansionRatio_t13,257
+  scalar r0;r014,291
+  scalar rInf;rInf15,304
+  scalar nLayers; // approximate valuenLayers16,319
+  scalar d0;d017,358
+  scalar yCut;yCut18,371
+  scalar A; // feedback powerA19,386
+} expansionRatio;expansionRatio20,416
+expansionRatio initExpansionRatio(const dictionary& dict)initExpansionRatio23,436
+void readPositionedPointSets(const fvMesh& mesh, const dictionary& dict, readPositionedPointSets38,748
+volScalarField getWallLayers(const fvMesh& mesh, Time& runTime, getWallLayers50,1059
+scalar wantedYDist(const expansionRatio& rExp, scalar yLayer)wantedYDist137,3048
+point wantedCellCentre(point cc, const expansionRatio& rExp,wantedCellCentre157,3402
+void smooth(const fvMesh& mesh, smooth171,3682
+void constrain(constrain209,4540
+void constrainDir(constrainDir219,4714
+void collapseEdges(const Map<label>& edges, const fvMesh& mesh, pointField& pf)collapseEdges232,4951
+bool facesDegenerate(const label& cellI, const label& faceI, const label& faceJ, facesDegenerate249,5264
+label getFaceFaceCommonEdge(const label& faceI, const label& faceJ, const fvMesh& mesh)getFaceFaceCommonEdge277,5994
+label getPointFaceCommonEdge(const label& pointI, const label& faceI, const label& otherPointI, const fvMesh& mesh)getPointFaceCommonEdge295,6421
+void collapseFaces(const label& cellI, const label& faceI,collapseFaces336,7450
+void collapseCells(List<bool>& collapsedCells, Map<label>& edges, const fvMesh& mesh,collapseCells368,8365
+void initializeCollapsedEdgesAndCells(const fvMesh& mesh, initializeCollapsedEdgesAndCells417,9361
+int main(int argc, char *argv[])main440,9846
+
+src/liboptiMesh/optiSteps/relaxed/relaxed.H,221
+#define relaxed_Hrelaxed_H2,18
+namespace Foam {Foam6,60
+namespace optiMesh {optiMesh7,77
+class relaxed : public optiStep {relaxed12,203
+  label count_;count_13,237
+  List<scalar> relaxation_;relaxation_16,318
+
+src/liboptiMesh/optiSteps/relaxed/relaxed.C,229
+namespace FoamFoam5,63
+namespace optiMeshoptiMesh7,80
+relaxed::relaxed(const fvMesh& mesh, const dictionary& dict) :relaxed19,250
+relaxed::~relaxed()~relaxed36,669
+scalar relaxed::update(const vectorField&)update40,694
+
+src/liboptiMesh/optiSteps/quadraticSearch/quadraticSearch.C,562
+namespace FoamFoam7,136
+namespace optiMeshoptiMesh9,153
+scalar quadraticSearch::shortestEdgeLength(const label& pointI) constshortestEdgeLength23,460
+scalar quadraticSearch::scaleDirection(const vectorField& dir) constscaleDirection45,853
+void quadraticSearch::fitQuadratic(const scalarField& x, fitQuadratic62,1346
+quadraticSearch::quadraticSearch(const fvMesh& mesh, const dictionary& dict) :quadraticSearch96,2029
+quadraticSearch::~quadraticSearch()~quadraticSearch130,3078
+scalar quadraticSearch::update(const vectorField& dir)update134,3119
+
+src/liboptiMesh/optiSteps/quadraticSearch/quadraticSearch.H,625
+#define quadraticSearch_HquadraticSearch_H4,91
+namespace Foam {Foam10,185
+namespace optiMesh {optiMesh11,202
+class quadraticSearch : public optiStep {quadraticSearch19,500
+  autoPtr<objective> obj_; // objective to evaluate at each position, doesnt need to be the same as the optiDirection object (but there probably isnt a good reason not to do soobj_20,542
+  List<scalar> initialSamples_; // first sample to take, as a fraction of the shortest edgeinitialSamples_22,720
+  label nMaxIters_;nMaxIters_24,813
+  scalar tol_; // convergence tolerance, stop when improvement in obj is smaller than thistol_26,834
+
+src/liboptiMesh/optiSteps/optiStep/optiStepNew.C,85
+autoPtr<optiStep> optiStep::New(const fvMesh& mesh, const dictionary& dict)New8,80
+
+src/liboptiMesh/optiSteps/optiStep/optiStep.C,179
+namespace FoamFoam4,24
+namespace optiMesh optiMesh6,41
+optiStep::optiStep(const fvMesh& mesh, const dictionary& dict) :optiStep18,211
+optiStep::~optiStep()~optiStep23,295
+
+src/liboptiMesh/optiSteps/optiStep/optiStep.H,170
+#define optiStep_HoptiStep_H2,19
+namespace Foam {Foam11,167
+namespace optiMesh {optiMesh12,184
+class optiStep {optiStep15,267
+  const fvMesh& mesh_;mesh_17,295
+
+src/liboptiMesh/optiDirections/optiDirection/optiDirectionNew.C,95
+autoPtr<optiDirection> optiDirection::New(const fvMesh& mesh, const dictionary& dict)New8,85
+
+src/liboptiMesh/optiDirections/optiDirection/optiDirection.C,258
+namespace FoamFoam7,78
+namespace optiMesh {optiMesh9,95
+optiDirection::optiDirection(const fvMesh& mesh, const dictionary& dict) : optiDirection20,274
+optiDirection::~optiDirection()~optiDirection27,428
+void optiDirection::write() constwrite31,465
+
+src/liboptiMesh/optiDirections/optiDirection/optiDirection.H,211
+#define optiDirection_HoptiDirection_H2,24
+namespace Foam {Foam11,177
+namespace optiMesh {optiMesh12,194
+class optiDirection : public vectorField {optiDirection15,297
+  const fvMesh& mesh_;mesh_17,351
+
+src/liboptiMesh/optiDirections/objectives/orthogonality.C,420
+namespace FoamFoam4,68
+namespace optiMesh optiMesh6,85
+labelList orthogonality::influencingPoints(const label& faceI) constinfluencingPoints19,341
+orthogonality::orthogonality(const fvMesh& mesh, const dictionary& dict) : orthogonality40,853
+orthogonality::~orthogonality()~orthogonality45,968
+void orthogonality::update()update49,1005
+scalar orthogonality::evaluate(const vectorField& dir)evaluate95,2204
+
+src/liboptiMesh/optiDirections/objectives/objective.H,1028
+#define objective_Hobjective_H2,20
+namespace Foam {Foam8,368
+namespace optiMesh {optiMesh9,385
+class objective : public optiDirectionobjective13,510
+  enum faceCentreType {faceCentreType16,560
+    simple,simple17,584
+    triangles,triangles18,596
+    gaussgauss19,611
+  faceCentreType fcType_;fcType_24,704
+  scalar penalizationB_; penalizationB_28,855
+  scalar penalizationA_;penalizationA_30,882
+  scalar penalizationC_;penalizationC_32,908
+  scalar objectiveMapConstant_;objectiveMapConstant_37,1011
+  scalar objectiveMapFactor_;objectiveMapFactor_39,1044
+  static bool debug_; // compare own calculations to OF calculationsdebug_42,1076
+  static scalar debugTol_;debugTol_45,1203
+  inline static scalar primitiveValue(const scalar& s)primitiveValue48,1296
+  inline static scalar primitiveValue(const crScalar& s)primitiveValue51,1369
+  inline static point primitiveValue(const point& p)primitiveValue54,1452
+  inline static point primitiveValue(const crPoint& p)primitiveValue57,1523
+
+src/liboptiMesh/optiDirections/objectives/objective.C,829
+namespace FoamFoam4,25
+namespace optiMeshoptiMesh6,42
+scalar objective::debugTol_ = 1e-8;debugTol_20,246
+bool objective::compareToNative(const scalar& opti, const scalar& native, const string& msg)compareToNative22,283
+bool objective::compareToNative(const crScalar& opti, const scalar& native, const string& msg)compareToNative37,609
+bool objective::compareToNative(const point& opti, const point& native, const string& msg)compareToNative52,953
+bool objective::compareToNative(const crPoint& opti, const point& native, const string& msg)compareToNative69,1295
+objective::objective(const fvMesh& mesh, const dictionary& dict) :objective87,1656
+objective::objective(const fvMesh& mesh, const dictionary& dict,objective92,1762
+objective::~objective()~objective120,2654
+void objective::update()update124,2683
+
+src/liboptiMesh/optiDirections/objectives/objectiveNew.C,87
+autoPtr<objective> objective::New(const fvMesh& mesh, const dictionary& dict)New8,81
+
+src/liboptiMesh/optiDirections/objectives/sphericity.C,394
+namespace FoamFoam5,100
+namespace optiMesh optiMesh7,117
+labelList sphericity::influencingPoints(const label& cellI) constinfluencingPoints20,364
+sphericity::sphericity(const fvMesh& mesh, const dictionary& dict) : sphericity28,502
+sphericity::~sphericity()~sphericity40,744
+void sphericity::update()update44,775
+scalar sphericity::evaluate(const vectorField& dir)evaluate89,1841
+
+src/liboptiMesh/optiDirections/objectives/objectiveTemplate.H,295
+void objective::penalize(ScalarType& x) constpenalize2,28
+void objective::faceCentreAndNormal(const label& faceI, const List<PointType>& points,faceCentreAndNormal28,485
+void objective::cellCentreAndVolume(const label& cellI, const List<PointType>& faceCentres,cellCentreAndVolume117,3187
+
+src/liboptiMesh/optiDirections/objectives/orthogonality.H,166
+#define orthogonality_Horthogonality_H2,24
+namespace Foam {Foam6,73
+namespace optiMesh {optiMesh7,90
+class orthogonality : public objectiveorthogonality9,112
+
+src/liboptiMesh/optiDirections/objectives/orthogonalityTemplate.H,166
+void orthogonality::cellCentre(const label& cellI, cellCentre3,69
+ScalarType orthogonality::calcFaceOrthogonality(const label& faceI,calcFaceOrthogonality34,1009
+
+src/liboptiMesh/optiDirections/objectives/sphericity.H,154
+#define sphericity_Hsphericity_H2,21
+namespace Foam {Foam6,67
+namespace optiMesh {optiMesh7,84
+class sphericity : public objectivesphericity9,106
+
+src/liboptiMesh/optiDirections/objectives/sphericityTemplate.H,169
+void sphericity::cellAreaAndVolume(const label& cellI, cellAreaAndVolume3,69
+ScalarType sphericity::calcCellSphericity(const label& cellI, calcCellSphericity38,1075
+
+src/liboptiMesh/optiDirections/objectives/chainRule/chainRuleScalar.C,1275
+chainRuleScalar::chainRuleScalar()chainRuleScalar12,127
+chainRuleScalar::chainRuleScalar(const scalar& value, const label& nPoints) :chainRuleScalar16,167
+chainRuleScalar::chainRuleScalar(const label& nPoints) :chainRuleScalar26,352
+chainRuleScalar::chainRuleScalar(const scalar& value) :chainRuleScalar32,447
+chainRuleScalar::chainRuleScalar(const scalar& value, const vectorField& gradient) :chainRuleScalar42,671
+chainRuleScalar::~chainRuleScalar()~chainRuleScalar48,800
+scalar chainRuleScalar::value() constvalue52,841
+vector chainRuleScalar::gradient(const label& id) constgradient58,902
+label chainRuleScalar::nPoints() constnPoints64,988
+crScalar& chainRuleScalar::operator+=(const crScalar& s)operator +=70,1060
+crScalar& chainRuleScalar::operator+=(const scalar& s)operator +=80,1191
+crScalar& chainRuleScalar::operator-=(const crScalar& s)operator -=88,1284
+crScalar& chainRuleScalar::operator-=(const scalar& s)operator -=98,1415
+crScalar& chainRuleScalar::operator*=(const crScalar& s)operator *=106,1508
+crScalar& chainRuleScalar::operator*=(const scalar& s)operator *=118,1674
+crScalar& chainRuleScalar::operator/=(const crScalar& s)operator /=128,1786
+crScalar& chainRuleScalar::operator/=(const scalar& s)operator /=142,1993
+
+src/liboptiMesh/optiDirections/objectives/chainRule/chainRuleOps.C,2390
+namespace FoamFoam6,85
+namespace optiMesh optiMesh8,102
+tensor operator^(const tensor& a, const vector& b)operator ^12,126
+tensorField operator^(const tensorField& a, const vector& b)operator ^18,233
+vectorField operator&(const tensorField& a, const vector& b)operator &30,383
+tensorField operator*(const vectorField& a, const vector& b)operator *42,533
+crScalar sqrt(const crScalar& a)sqrt54,683
+scalar sqrt(const scalar& a)sqrt64,851
+crScalar cbrt(const crScalar& a)cbrt70,910
+scalar cbrt(const scalar& a)cbrt80,1094
+crScalar mag(const crPoint& a)mag86,1153
+scalar mag(const point& a)mag92,1210
+crScalar pow(const crScalar& a, const scalar& p)pow98,1266
+scalar pow(const scalar& a, const scalar& p) pow112,1623
+crScalar operator+(const crScalar& a, const crScalar& b)operator +122,1816
+crScalar operator+(const crScalar& a, const scalar& b)operator +132,1920
+crScalar operator+(const scalar& a, const crScalar& b)operator +142,2022
+crScalar operator-(const crScalar& a, const crScalar& b)operator -148,2099
+crScalar operator-(const crScalar& a, const scalar& b)operator -158,2203
+crScalar operator-(const scalar& a, const crScalar& b)operator -168,2305
+crScalar operator*(const crScalar& a, const crScalar& b)operator *174,2394
+crScalar operator*(const crScalar& a, const scalar& b)operator *184,2498
+crScalar operator*(const scalar& a, const crScalar& b)operator *194,2600
+crScalar operator/(const crScalar& a, const crScalar& b)operator /200,2675
+crScalar operator/(const crScalar& a, const scalar& b)operator /210,2779
+crScalar operator/(const scalar& a, const crScalar& b)operator /220,2881
+crPoint operator+(const crPoint& a, const crPoint& b)operator +230,3071
+crPoint operator-(const crPoint& a, const crPoint& b)operator -240,3171
+crPoint operator*(const crPoint& a, const crScalar& b)operator *250,3271
+crPoint operator*(const crScalar& a, const crPoint& b)operator *260,3372
+crPoint operator*(const crPoint& a, const scalar& b)operator *266,3447
+crPoint operator*(const scalar& a, const crPoint& b)operator *276,3546
+crPoint operator/(const crPoint& a, const crScalar& b)operator /282,3619
+crPoint operator/(const crPoint& a, const scalar& b)operator /292,3720
+crScalar operator&(const crPoint& a, const crPoint& b)operator &302,3819
+crPoint operator^(const crPoint& a, const crPoint& b)operator ^313,4059
+
+src/liboptiMesh/optiDirections/objectives/chainRule/chainRuleScalar.H,274
+#define chainRuleScalar_HchainRuleScalar_H2,26
+namespace Foam {Foam11,164
+namespace optiMesh {optiMesh12,181
+class chainRuleScalarchainRuleScalar14,203
+  scalar value_;value_18,253
+  vectorField gradient_;gradient_20,271
+  static label nPoints_;nPoints_23,305
+
+src/liboptiMesh/optiDirections/objectives/chainRule/chainRuleFwd.H,201
+#define chainRuleFwd_HchainRuleFwd_H2,23
+namespace Foam {Foam3,46
+namespace optiMesh {optiMesh4,63
+typedef chainRuleScalar crScalar;crScalar9,131
+typedef chainRulePoint crPoint;crPoint10,165
+
+src/liboptiMesh/optiDirections/objectives/chainRule/chainRuleOps.H,109
+#define chainRuleOps_HchainRuleOps_H2,23
+namespace Foam {Foam11,135
+namespace optiMesh {optiMesh12,152
+
+src/liboptiMesh/optiDirections/objectives/chainRule/chainRule.H,37
+#define chainRule_HchainRule_H2,20
+
+src/liboptiMesh/optiDirections/objectives/chainRule/chainRulePoint.C,1565
+chainRulePoint::chainRulePoint()chainRulePoint12,178
+chainRulePoint::chainRulePoint(const point& value, const label& nPoints) :chainRulePoint16,216
+chainRulePoint::chainRulePoint(const point& value) :chainRulePoint22,334
+chainRulePoint::chainRulePoint(const scalar& x, const scalar& y, const scalar& z) :chainRulePoint32,549
+chainRulePoint::chainRulePoint(const label& nPoints) :chainRulePoint42,802
+chainRulePoint::chainRulePoint(const point& value, const label& id, const label& nPoints) :chainRulePoint48,903
+chainRulePoint::chainRulePoint(const scalar& x, const scalar& y, const scalar& z, chainRulePoint60,1175
+chainRulePoint::chainRulePoint(const point& value, const tensorField& gradient) :chainRulePoint66,1352
+chainRulePoint::~chainRulePoint()~chainRulePoint72,1478
+vector chainRulePoint::value() constvalue76,1517
+tensor chainRulePoint::gradient(const label& id) constgradient82,1577
+label chainRulePoint::nPoints() constnPoints88,1662
+crPoint& chainRulePoint::operator+=(const crPoint& p)operator +=94,1733
+crPoint& chainRulePoint::operator+=(const point& p)operator +=104,1861
+crPoint& chainRulePoint::operator-=(const crPoint& p)operator -=112,1951
+crPoint& chainRulePoint::operator-=(const point& p)operator -=122,2079
+crPoint& chainRulePoint::operator*=(const crScalar& s)operator *=130,2169
+crPoint& chainRulePoint::operator*=(const scalar& s)operator *=142,2335
+crPoint& chainRulePoint::operator/=(const crScalar& s)operator /=152,2445
+crPoint& chainRulePoint::operator/=(const scalar& s)operator /=158,2537
+
+src/liboptiMesh/optiDirections/objectives/chainRule/chainRulePoint.H,270
+#define chainRulePoint_HchainRulePoint_H2,25
+namespace Foam {Foam41,826
+namespace optiMesh {optiMesh42,843
+class chainRulePoint chainRulePoint44,865
+  point value_;value_46,889
+  tensorField gradient_;gradient_48,906
+  static label nPoints_;nPoints_51,940
+
+src/liboptiMesh/optiDirections/laplacian/laplacian.H,286
+#define laplacian_Hlaplacian_H2,20
+namespace Foam {Foam6,69
+namespace optiMesh {optiMesh7,86
+class laplacian : public optiDirectionlaplacian10,126
+  scalar idwPower_; // optional idwPower_12,167
+  scalar idwTol_; // small number so we dont get division by zeroidwTol_14,201
+
+src/liboptiMesh/optiDirections/laplacian/laplacian.C,304
+namespace FoamFoam4,25
+namespace optiMesh optiMesh6,42
+scalar laplacian::calcIDW(const point& p, const point& q) constcalcIDW17,160
+laplacian::laplacian(const fvMesh& mesh, const dictionary& dict) : laplacian37,494
+laplacian::~laplacian()~laplacian44,713
+void laplacian::update()update48,742
+
+src/liboptiMesh/optiDirections/laplacian/faceLaplacian.C,399
+namespace FoamFoam5,69
+namespace optiMesh optiMesh7,86
+scalar faceLaplacian::weight(const label& pointI, const label& faceI) constweight19,274
+void faceLaplacian::average(const label& pointI, point& pSum, scalar& wSum) constaverage45,736
+faceLaplacian::faceLaplacian(const fvMesh& mesh, const dictionary& dict) : faceLaplacian64,1082
+faceLaplacian::~faceLaplacian()~faceLaplacian82,1530
+
+src/liboptiMesh/optiDirections/laplacian/cellLaplacian.H,310
+#define cellLaplacian_HcellLaplacian_H2,24
+namespace Foam {Foam6,73
+namespace optiMesh {optiMesh7,90
+class cellLaplacian : public laplaciancellLaplacian9,112
+  enum weightType {weightType12,161
+    simple,simple13,181
+    volume,volume14,193
+    idwidw15,205
+  weightType wType_;wType_19,228
+
+src/liboptiMesh/optiDirections/laplacian/pointLaplacian.H,428
+#define pointLaplacian_HpointLaplacian_H2,25
+namespace Foam {Foam6,75
+namespace optiMesh {optiMesh7,92
+class pointLaplacian : public laplacianpointLaplacian9,114
+  enum weightType {weightType12,164
+    simple,simple13,184
+    idw,idw14,196
+    unique // if duplicate points are detected in weighting kernel then give them half the weightunique15,205
+  weightType wType_;wType_19,318
+  scalar tol_;tol_22,370
+
+src/liboptiMesh/optiDirections/laplacian/pointLaplacian.C,551
+namespace FoamFoam5,70
+namespace optiMesh optiMesh7,87
+scalar pointLaplacian::calcUniqueness(const label& pointI, const labelList& allPointIds,calcUniqueness19,277
+scalar pointLaplacian::weight(const label& pointI, const label& otherI, const labelList& allOtherIds) constweight50,837
+void pointLaplacian::average(const label& pointI, point& pSum, scalar& wSum) constaverage71,1279
+pointLaplacian::pointLaplacian(const fvMesh& mesh, const dictionary& dict) : pointLaplacian88,1602
+pointLaplacian::~pointLaplacian()~pointLaplacian107,2108
+
+src/liboptiMesh/optiDirections/laplacian/faceLaplacian.H,306
+#define faceLaplacian_HfaceLaplacian_H2,24
+namespace Foam {Foam6,73
+namespace optiMesh {optiMesh7,90
+class faceLaplacian : public laplacianfaceLaplacian9,112
+  enum weightType {weightType12,161
+    simple,simple13,181
+    area,area14,193
+    idwidw15,203
+  weightType wType_;wType_19,226
+
+src/liboptiMesh/optiDirections/laplacian/cellLaplacian.C,398
+namespace FoamFoam5,69
+namespace optiMesh optiMesh7,86
+scalar cellLaplacian::weight(const label& pointI, const label& cellI) constweight19,274
+void cellLaplacian::average(const label& pointI, point& pSum, scalar& wSum) constaverage39,631
+cellLaplacian::cellLaplacian(const fvMesh& mesh, const dictionary& dict) : cellLaplacian56,943
+cellLaplacian::~cellLaplacian()~cellLaplacian74,1395
+
+src/liboptiMesh/optiSolvers/LBFGS/LBFGS.H,444
+#define LBFGS_HLBFGS_H2,16
+namespace FoamFoam6,58
+namespace optiMesh optiMesh8,75
+class LBFGS : public optiSolverLBFGS11,98
+  vectorField prevU_; // store previous outputprevU_13,132
+  pointField  prevPoints_; // store previous positionsprevPoints_14,179
+  label maxSize_;maxSize_16,235
+  label updateI_;updateI_17,253
+  List<scalar> rho_;rho_20,338
+  List<vectorField> delta_;delta_21,359
+  List<vectorField> y_;y_22,387
+
+src/liboptiMesh/optiSolvers/LBFGS/LBFGS.C,462
+namespace FoamFoam5,61
+namespace optiMeshoptiMesh7,78
+label LBFGS::circulate(const label& in) constcirculate19,252
+void LBFGS::push(const scalar& rho, const vectorField& delta, const vectorField& y)push33,401
+vectorField LBFGS::recurse(const label& depthI, const vectorField& x) constrecurse54,815
+LBFGS::LBFGS(const fvMesh& mesh, const dictionary& dict) :LBFGS76,1307
+LBFGS::~LBFGS()~LBFGS85,1542
+void LBFGS::update(vectorField& U)update89,1563
+
+src/liboptiMesh/optiSolvers/optiSolver/optiSolver.H,178
+#define optiSolver_HoptiSolver_H2,21
+namespace Foam {Foam11,171
+namespace optiMesh {optiMesh12,188
+class optiSolver {optiSolver15,271
+  const fvMesh& mesh_;mesh_17,301
+
+src/liboptiMesh/optiSolvers/optiSolver/optiSolverNew.C,89
+autoPtr<optiSolver> optiSolver::New(const fvMesh& mesh, const dictionary& dict)New8,82
+
+src/liboptiMesh/optiSolvers/optiSolver/optiSolver.C,333
+namespace FoamFoam4,26
+namespace optiMesh optiMesh6,43
+scalar optiSolver::magSq(const vectorField& a)magSq18,217
+scalar optiSolver::magSq(const vectorField& a, const vectorField& b)magSq30,349
+optiSolver::optiSolver(const fvMesh& mesh, const dictionary& dict) :optiSolver42,505
+optiSolver::~optiSolver()~optiSolver47,593
+
+src/liboptiMesh/optiSolvers/none/none.H,134
+#define none_Hnone_H2,15
+namespace Foam {Foam6,56
+namespace optiMesh {optiMesh7,73
+class none : public optiSolver {none12,199
+
+src/liboptiMesh/optiSolvers/none/none.C,200
+namespace FoamFoam5,60
+namespace optiMeshoptiMesh7,77
+none::none(const fvMesh& mesh, const dictionary& dict) :none19,243
+none::~none()~none24,330
+void none::update(vectorField&)update28,349
+
+src/liboptiMesh/optiSolvers/CG/CG.C,188
+namespace FoamFoam4,57
+namespace optiMeshoptiMesh6,74
+CG::CG(const fvMesh& mesh, const dictionary& dict) :CG18,236
+CG::~CG()~CG29,432
+void CG::update(vectorField& U)update34,526
+
+src/liboptiMesh/optiSolvers/CG/CG.H,205
+#define CG_HCG_H2,13
+namespace Foam {Foam6,52
+namespace optiMesh {optiMesh7,69
+class CG : public optiSolver {CG10,113
+  vectorField rho_;rho_12,155
+  scalar prevNumerator_;prevNumerator_14,176
+
+src/liboptiMesh/optiConstraints/cylindrical/cylindrical.C,418
+namespace FoamFoam5,67
+namespace optiMeshoptiMesh7,84
+scalar cylindrical::radius(const label& origI) constradius19,274
+point cylindrical::project(const label& origI, const point& a) constproject32,474
+cylindrical::cylindrical(const fvMesh& mesh, const dictionary& dict) : cylindrical56,1131
+cylindrical::~cylindrical()~cylindrical73,1628
+void cylindrical::constrain(pointField& pf) constconstrain77,1661
+
+src/liboptiMesh/optiConstraints/cylindrical/cylindrical.H,297
+#define cylindrical_Hcylindrical_H2,22
+namespace Foam {Foam7,111
+namespace optiMesh {optiMesh8,128
+class cylindrical : public optiConstraintcylindrical10,150
+  point origin_;origin_12,194
+  vector axis_;axis_14,212
+  bool singleCylinder_;singleCylinder_16,229
+  scalar r_;r_18,254
+
+src/liboptiMesh/optiConstraints/fixed/fixed.C,222
+namespace FoamFoam5,61
+namespace optiMeshoptiMesh7,78
+fixed::fixed(const fvMesh& mesh, const dictionary& dict) : fixed19,256
+fixed::~fixed()~fixed24,350
+void fixed::constrain(pointField& pf) constconstrain28,371
+
+src/liboptiMesh/optiConstraints/fixed/fixed.H,139
+#define fixed_Hfixed_H2,16
+namespace Foam {Foam6,62
+namespace optiMesh {optiMesh7,79
+class fixed : public optiConstraintfixed9,101
+
+src/liboptiMesh/optiConstraints/polynomial/polynomial.H,309
+#define polynomial_Hpolynomial_H2,21
+namespace Foam {Foam19,409
+namespace optiMesh {optiMesh20,426
+class polynomial : public optiConstraintpolynomial22,448
+  point origin_;origin_24,491
+  vector axis_;axis_26,509
+  vector n_;n_28,526
+  vector t_;t_30,540
+  scalarField coeffs_;coeffs_32,554
+
+src/liboptiMesh/optiConstraints/polynomial/polynomial.C,409
+namespace FoamFoam5,66
+namespace optiMeshoptiMesh7,83
+scalar polynomial::evaluate(const scalar& x) constevaluate18,270
+point polynomial::project(const label& origI, const point& a) constproject33,449
+polynomial::polynomial(const fvMesh& mesh, const dictionary& dict) : polynomial50,762
+polynomial::~polynomial()~polynomial64,1064
+void polynomial::constrain(pointField& pf) constconstrain68,1095
+
+src/liboptiMesh/optiConstraints/optiConstraint/optiConstraint.H,311
+#define optiConstraint_HoptiConstraint_H2,25
+namespace Foam {Foam11,200
+namespace optiMesh {optiMesh12,217
+class optiConstraint : public pointSet optiConstraint14,239
+  const fvMesh& mesh_; // can be used for more advanced constraints (like localSmoothing)mesh_17,292
+  pointField orig_;orig_19,383
+
+src/liboptiMesh/optiConstraints/optiConstraint/optiConstraintNew.C,97
+autoPtr<optiConstraint> optiConstraint::New(const fvMesh& mesh, const dictionary& dict)New6,84
+
+src/liboptiMesh/optiConstraints/optiConstraint/optiConstraint.C,216
+namespace FoamFoam4,30
+namespace optiMesh optiMesh6,47
+optiConstraint::optiConstraint(const fvMesh& mesh, const dictionary& dict) : optiConstraint18,229
+optiConstraint::~optiConstraint()~optiConstraint25,394
+
+src/liboptiMesh/optiConstraints/localSmoothing/localSmoothing.H,527
+#define localSmoothin_HlocalSmoothin_H2,24
+namespace Foam {Foam16,308
+namespace optiMesh {optiMesh17,325
+class localSmoothing : public optiConstraintlocalSmoothing19,347
+  label nIters_;nIters_21,394
+  scalar relaxation_;relaxation_22,411
+  List<label> pointIds_;pointIds_24,434
+  List<bool> active_; // depends on optional localFixedPoints pointSetactive_25,459
+  List<List<label>> neighbourIds_;neighbourIds_26,530
+  List<List<label>> localNeighbourIds_; // indices into pointIds_localNeighbourIds_27,565
+
+src/liboptiMesh/optiConstraints/localSmoothing/localSmoothing.C,288
+namespace FoamFoam5,70
+namespace optiMeshoptiMesh7,87
+localSmoothing::localSmoothing(const fvMesh& mesh, const dictionary& dict) : localSmoothing19,283
+localSmoothing::~localSmoothing()~localSmoothing96,2387
+void localSmoothing::constrain(pointField& pf) constconstrain100,2426
+
+src/liboptiMesh/optiConstraints/planar/planar.C,308
+namespace FoamFoam5,62
+namespace optiMeshoptiMesh7,79
+point planar::project(const label& origI, const point& a) constproject19,259
+planar::planar(const fvMesh& mesh, const dictionary& dict) : planar30,449
+planar::~planar()~planar38,669
+void planar::constrain(pointField& pf) constconstrain42,692
+
+src/liboptiMesh/optiConstraints/planar/planar.H,278
+#define planar_Hplanar_H2,17
+namespace Foam {Foam15,223
+namespace optiMesh {optiMesh16,240
+class planar : public optiConstraintplanar18,262
+  vector n_;n_20,301
+  bool singlePlane_; // defaults to falsesinglePlane_22,315
+  point p_; // single planar pointp_24,358
+
+src/liboptiMesh/optiConstraints/minDistance/minDistance.H,475
+#define localSmoothin_HlocalSmoothin_H2,24
+namespace Foam {Foam18,366
+namespace optiMesh {optiMesh19,383
+class minDistance : public optiConstraintminDistance21,405
+  scalar fractionOfStart_;fractionOfStart_23,449
+  scalar absDist_;absDist_24,476
+  List<bool> active_; // those in fixedSet are inactiveactive_26,496
+  List<point> fixedPoints_;fixedPoints_27,552
+  List<point> startPoints_;startPoints_28,580
+  List<label> local2global_;local2global_29,608
+
+src/liboptiMesh/optiConstraints/minDistance/minDistance.C,266
+namespace FoamFoam5,67
+namespace optiMeshoptiMesh7,84
+minDistance::minDistance(const fvMesh& mesh, const dictionary& dict) : minDistance19,274
+minDistance::~minDistance()~minDistance84,1849
+void minDistance::constrain(pointField& pf) constconstrain88,1882
+
+src/libextraSets/minHexAspectRatio/minHexAspectRatio.C,596
+namespace FoamFoam5,94
+scalar minHexAspectRatio::getDelta(const label& cellI, const scalar& V, vector dir) const {getDelta23,560
+void minHexAspectRatio::combine(topoSet& set, const bool add) constcombine55,1258
+minHexAspectRatio::minHexAspectRatio(const polyMesh& mesh, const vector& greater, minHexAspectRatio71,1591
+minHexAspectRatio::minHexAspectRatio(const polyMesh& mesh,minHexAspectRatio80,1816
+minHexAspectRatio::minHexAspectRatiominHexAspectRatio87,2040
+minHexAspectRatio::~minHexAspectRatio()~minHexAspectRatio99,2235
+void minHexAspectRatio::applyToSetapplyToSet103,2280
+
+src/libextraSets/minHexAspectRatio/minHexAspectRatio.H,353
+#define minHexAspectRatio_HminHexAspectRatio_H2,28
+namespace FoamFoam6,85
+class minHexAspectRatio : public topoSetSourceminHexAspectRatio8,102
+  static addToUsageTable usage_;usage_10,151
+  vector greater_;greater_12,185
+  vector lesser_;lesser_14,205
+  scalar minRatio_;minRatio_16,224
+  virtual sourceType setType() constsetType50,739
+
+src/libextraSets/halfSpaceToCell/halfSpaceToCell.C,455
+namespace FoamFoam5,92
+void halfSpaceToCell::combine(topoSet& set, const bool add) constcombine23,546
+halfSpaceToCell::halfSpaceToCell(const polyMesh& mesh, const point& origin, halfSpaceToCell41,854
+halfSpaceToCell::halfSpaceToCell(const polyMesh& mesh,halfSpaceToCell49,1009
+halfSpaceToCell::halfSpaceToCellhalfSpaceToCell56,1168
+halfSpaceToCell::~halfSpaceToCell()~halfSpaceToCell67,1315
+void halfSpaceToCell::applyToSetapplyToSet71,1356
+
+src/libextraSets/halfSpaceToCell/halfSpaceToCell.H,294
+#define halfSpaceToCell_HhalfSpaceToCell_H2,26
+namespace FoamFoam6,81
+class halfSpaceToCell : public topoSetSourcehalfSpaceToCell8,98
+  static addToUsageTable usage_;usage_10,145
+  point origin_;origin_12,179
+  vector n_;n_14,197
+  virtual sourceType setType() constsetType45,585
