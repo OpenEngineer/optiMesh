@@ -7,13 +7,14 @@ FoamFile
   object optiMeshDict;
 }
 
+// see optiMesh tutorials for a more complete example
+
 nIters 10;
 
 writeInterval 0; // 0 or negative to not write at all, otherwise increment runTime and save
 
 
 boundaryRefinement {
-  useSourceFace true; // override meshWave
   onlyOpposite true; // only ok for hex-meshes
 
   default {

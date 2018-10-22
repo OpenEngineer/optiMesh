@@ -53,13 +53,26 @@ step {
   }
 }
 
+boundaryRefinement {
+  onlyOpposite false;
+  relaxation 0.5;
 
-r0 1.5;
-rInf 2.0;
-yCut 2.0;
-d0 0.03;
-nLayers 4;
-A 1.0;
+  default {
+    r0 1.2;
+    d0 0.03;
+    nLayers 0;
+  } 
+
+  patches {
+    wall {
+      r0 1.2;
+      d0 0.03;
+      nLayers 3;
+    }
+  }
+}
+
+// collapsing is a special feature to turn bad hex cells into zero volume cells
 collapseDegenerateHexCells false;
 degenerateAngle 10;
 

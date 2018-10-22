@@ -1,0 +1,8 @@
+#!/bin/bash
+
+TIME=`foamListTimes -noFunctionObjects 2> /dev/null | tail -1`
+
+cp -r -t constant/polyMesh/ $TIME/polyMesh/*
+
+echo "Warning: fields are not moved! Everything in $TIME will be deleted"
+rm -fr $TIME

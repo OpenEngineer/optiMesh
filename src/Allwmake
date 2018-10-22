@@ -3,3 +3,8 @@ cd ${0%/*}
 
 wmake libso liboptiMesh
 wmake libso libextraSets
+
+if [ -d $FOAM_USER_LIBBIN ]
+then
+  cp -t $FOAM_USER_LIBBIN/ ./bashTools/bashTools
+fi

@@ -1,6 +1,14 @@
 #!/bin/bash
-cd ${0%/*}
-blockMesh
-setSet -batch system/pointSetBatch
-cp -rf -T 0.orig 0
-optiMesh
+. $FOAM_USER_LIBBIN/bashTools
+
+# run 'Allrun -h' to see what bashTools does
+
+runApplication rm -f -r 0 [1-9]* VTK/ constant/polyMesh
+
+runApplication blockMesh
+
+runApplication setSet -batch system/pointSetBatch
+
+runApplication cp -rf -T 0.orig 0
+
+runApplication optiMesh

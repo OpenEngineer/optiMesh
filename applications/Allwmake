@@ -4,3 +4,8 @@ cd ${0%/*}
 wmake optiMesh
 wmake removeCells
 wmake collapseCells
+
+if [ -d $FOAM_USER_APPBIN ]
+then
+  cp -t $FOAM_USER_APPBIN/ ./moveLastToConstant/moveLastToConstant
+fi

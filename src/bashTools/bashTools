@@ -1,0 +1,172 @@
+#!/bin/bash
+
+# check if a parent directory of 
+if [ -n "`echo $PWD | grep "template"`" ]
+then
+  echo "Error: not allowed to run template case, please copy somewhere else"
+  exit 1
+fi
+
+# use globals to communicate between the bash functions
+NPROCS=1
+CURRENT=0
+LOG_FILE=
+ERROR=
+APPLICATION=
+APPLICATION_ARGS=
+MODE=run
+FIRST=
+LAST=
+
+getNumberOfProcessors()
+{
+  foamDictionary -entry numberOfSubdomains -value system/decomposeParDict
+}
+
+getMainApplication()
+{
+  foamDictionary -entry application -value system/controlDict
+}
+
+setCurrentLogFile()
+{
+  LOG_FILE=log.$(printf "%03d" $CURRENT).${APPLICATION##*/}
+
+  if [ -f $LOG_FILE ]
+  then
+    ERROR=`tail -1 $LOG_FILE`
+  else
+    ERROR="exit=0"
+  fi
+}
+
+exitIfUnresolvedError()
+{
+  if [ "$ERROR" != "exit=0" ]
+  then
+    echo "Error: unresolved error when $APPLICATION was run, see $LOG_FILE"
+    exit 1
+  fi
+}
+
+runApplication() 
+{
+  APPLICATION=$1
+
+  shift
+
+  APPLICATION_ARGS=$@
+
+  CURRENT=$(($CURRENT + 1))
+
+  SKIP=false
+
+  if [ -n "$FIRST" ]
+  then
+    if [ -z $LAST ]
+    then
+      if ! [ $CURRENT -eq $FIRST ]
+      then
+        SKIP=true
+      fi
+    fi
+
+    if [ $CURRENT -lt $FIRST ]
+    then
+      SKIP=true
+    fi
+  fi
+
+  if [ -n "$LAST" ]
+  then
+    if [ $CURRENT -gt $LAST ]
+    then
+      SKIP=true
+    fi
+  fi
+
+
+  if [ "$MODE" = "run" ]
+  then
+
+    if [ "$SKIP" = "false" ]
+    then
+      setCurrentLogFile
+
+      exitIfUnresolvedError
+
+      if ! [ -f $LOG_FILE ]
+      then
+        echo "Running $APPLICATION, writing to $LOG_FILE"
+
+        if [ $NPROCS -eq 1 ]
+        then
+          $APPLICATION $APPLICATION_ARGS > $LOG_FILE
+          ERROR="exit=$?"
+        elif [ $NPROCS -gt 1 ] 
+        then
+          mpirun -np $NPROCS $APPLICATION -parallel > $LOG_FILE
+          ERROR="exit=$?"
+        else
+          echo "Error: bad specification of NPROCS"
+          exit 1
+        fi
+
+        echo "$ERROR" >> $LOG_FILE
+
+        exitIfUnresolvedError
+      else
+        echo "$APPLICATION already ran succesfully last time, skipping (see $LOG_FILE)"
+      fi
+    fi
+  elif [ "$MODE" = "list" ]
+  then
+    echo $CURRENT ": " $APPLICATION " " $APPLICATION_ARGS
+  else
+    echo "Error: mode $MODE not recognized"
+    exit 1
+  fi
+}
+
+runParallel()
+{
+  NPROCS=$(getNumberOfProcessors)
+
+  runApplication $@
+
+  NPROCS=1 # dont influence next application
+}
+
+
+printHelpAndExit() {
+  echo "${1##*/} [-h | -l ] [ FIRST [ LAST ]]"
+  exit 0
+}
+
+
+parseGlobalArgs()
+{
+  GLOBAL_ARGS=$@
+  if [ -n "$GLOBAL_ARGS" ]
+  then
+    if [ "$1" = "-l" ]
+    then
+      MODE=list
+    elif [ "$1" = "-h" ]
+    then
+      printHelpAndExit $0
+    elif [ $# -eq 1 ]
+    then
+      FIRST=$1
+    elif [ $# -eq 2 ]
+    then
+      FIRST=$1
+      LAST=$2
+    else
+      echo "Error: unable to parse arguments"
+      exit 1
+    fi
+  fi
+}
+
+parseGlobalArgs $@

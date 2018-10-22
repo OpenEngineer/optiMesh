@@ -192,7 +192,7 @@ point wantedCellCentre(point cc, const boundaryRefinement& rExp,
 
 void calcWantedCellCentres(const fvMesh& mesh, vectorField& altCellCentres, 
     const volScalarField& yLayer, const labelList& sourceFace, 
-    const volScalarField& yDist, const volVectorField& yNormal, bool useSourceFace, 
+    const volScalarField& yDist, const volVectorField& yNormal,
     const boundaryRefinement& bRef, const labelList& cells)
 {
   forAll(cells, i) {
@@ -200,18 +200,7 @@ void calcWantedCellCentres(const fvMesh& mesh, vectorField& altCellCentres,
 
     point cc = mesh.cellCentres()[cellI];
 
-    scalar distToWall = yDist[cellI];
     vector ynLocal = yNormal[cellI];
-
-    // XXX: there are strong indications that this is exactly what meshWaves does
-    if (useSourceFace && sourceFace[cellI] != -1) {
-      vector d = cc - mesh.faceCentres()[sourceFace[cellI]];
-      scalar distToWall_ = Foam::sqrt(d&d);
-
-      vector ynLocal_ = -d/distToWall_;
-      distToWall = distToWall_;
-      ynLocal = ynLocal;
-    }
 
     cc = wantedCellCentre(cc, bRef, yLayer[cellI], yDist[cellI], ynLocal);
 
@@ -221,15 +210,15 @@ void calcWantedCellCentres(const fvMesh& mesh, vectorField& altCellCentres,
 
 void calcWantedCellCentres(const fvMesh& mesh, vectorField& altCellCentres, 
     const volScalarField& yLayer, const labelList& sourceFace, 
-    const volScalarField& yDist, const volVectorField& yNormal, bool useSourceFace, 
+    const volScalarField& yDist, const volVectorField& yNormal, 
     const boundaryRefinement& defaultBoundaryRefinement, 
     const PatchesBoundaryRefinement& patchBoundaryRefinement)
 {
-  calcWantedCellCentres(mesh, altCellCentres, yLayer, sourceFace, yDist, yNormal, useSourceFace,
+  calcWantedCellCentres(mesh, altCellCentres, yLayer, sourceFace, yDist, yNormal,
       defaultBoundaryRefinement, defaultBoundaryRefinement.cells());
 
   forAllConstIter(PatchesBoundaryRefinement, patchBoundaryRefinement, iter) {
-    calcWantedCellCentres(mesh, altCellCentres, yLayer, sourceFace, yDist, yNormal, useSourceFace,
+    calcWantedCellCentres(mesh, altCellCentres, yLayer, sourceFace, yDist, yNormal,
         iter(), iter().cells());
   }
 }
@@ -351,6 +340,9 @@ label getFaceFaceCommonEdge(const label& faceI, const label& faceJ, const fvMesh
   }
 
   FatalErrorInFunction << "no common edge found" << exit(FatalError);
+
+  // to avoid compiler warning
+  return -1;
 }
 
 
@@ -392,6 +384,9 @@ label getPointFaceCommonEdge(const label& pointI, const label& faceI, const labe
   } 
 
   FatalErrorInFunction << "algo error" << exit(FatalError);
+
+  // to avoid compiler warning
+  return -1;
 }
 
 
@@ -602,7 +597,6 @@ int main(int argc, char *argv[])
 
   // boundary cell layers: init of data structures
   const dictionary& boundaryRefinementDict(dict.subDict("boundaryRefinement"));
-  bool useSourceFace = bool(boundaryRefinementDict.lookup("useSourceFace"));
   bool onlyOpposite = bool(boundaryRefinementDict.lookup("onlyOpposite"));
   boundaryRefinement defaultBoundaryRefinement = initBoundaryRefinement(boundaryRefinementDict.subDict("default"));
   Info << "Default boundary refinement with d0=" << defaultBoundaryRefinement.d0 <<
@@ -668,7 +662,7 @@ int main(int argc, char *argv[])
 
       vectorField altCellCentres(mesh.cellCentres());
 
-      calcWantedCellCentres(mesh, altCellCentres, yLayer, sourceFace, wd.y(), wd.n(), useSourceFace, defaultBoundaryRefinement, patchBoundaryRefinement);
+      calcWantedCellCentres(mesh, altCellCentres, yLayer, sourceFace, wd.y(), wd.n(), defaultBoundaryRefinement, patchBoundaryRefinement);
 
       smooth(mesh, pf, boundaryRelaxation, altCellCentres);
 
